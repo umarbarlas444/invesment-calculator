@@ -1,0 +1,114 @@
+BODY {
+	min-width: 800px; margin: 0px; padding: 0px; background: #000000 url("../Images/Background_Page.png") top left repeat-x; text-align: center; overflow-y: scroll;
+	}
+BODY, TABLE, TR, TD, FORM, BLOCKQUOTE, DD, OL, UL, LI, P {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 12px; color: #FFFFFF;
+	}
+INPUT, TEXTAREA {
+	box-sizing: border-box; -ms-box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+	}
+A {
+	color: #FFFFFF; text-decoration: underline;
+	}
+A:Hover {
+	color: #FFAE48; text-decoration: none;
+	}
+H1 {
+	font-size: 16px; color: #FFFFFF; display: inline;
+	}
+H2 {
+	font-size: 14px; font-weight: normal; color: #FFFFFF; display: inline;
+	}
+BLOCKQUOTE {
+	margin: 0px; padding-left: 50px; padding-right: 50px;
+	}
+OL, UL, DD {
+	margin: 0px; padding-left: 50px; padding-right: 50px; text-align: left;
+	}
+OL OL, UL UL {
+	margin: 0px; padding-left: 50px; padding-right: 0px; text-align: left;
+	}
+LI, LI LI {
+	margin-left: 15px; color: #FFFFFF; list-style-type: disc;
+	}
+.PageContainer {
+	width: 800px; margin-left: auto; margin-right: auto; overflow: hidden;
+	}
+.PageHeader {
+	margin-left: auto; margin-right: auto; text-align: left;
+	}
+.PageLogo {
+	height: 70px; margin-top: 10px;
+	}
+.PageMenu {
+	width: 800px; height: 27px; margin-top: 10px; background-color: #131C36; border-top: 2px solid #FFFFFF; border-bottom: 1px solid #4D4D60; font-size: 13px; overflow: hidden;
+	}
+.PageMenuItem {
+	float: left; height: 30px; margin-top: 4px; margin-left: 20px; text-transform: uppercase;
+	}
+.PageMenuLink {
+	color: #FFFFFF; text-decoration: none;
+	}
+.PageMenuLink:Hover {
+	text-decoration: none;
+	}
+.PageContent {
+	min-height: 300px; padding: 20px; padding-top: 40px; padding-bottom: 40px;
+	}
+.PageContentTitle {
+	font-size: 36px; font-weight: bold;
+	}
+.PageContentSubTitle {
+	margin-top: 30px; font-size: 24px; font-weight: bold;
+	}
+.PageContentText {
+	margin-top: 30px; line-height: 30px;
+	}
+.PageContentText, .PageContentText TABLE, TR, TD, UL, LI, P {
+	font-size: 16px; font-weight: bold;
+	}
+.PageFooterMenu {
+	margin-top: 15px; padding: 15px; border-top: 1px solid #4D4D60; font-size: 11px; color: #FEFEFE; text-align: center;
+	}
+.PageFooterMenuLink {
+	color: #FEFEFE; text-transform: uppercase;
+	}
+.PageFooterMenuLink:Hover {
+	color: #FFAE48;
+	}
+.PageFooter {
+	margin-bottom: 20px; padding: 10px; font-family: Arial, Helvetica, Sans-Serif; font-size: 10px; color: #FEFEFE; text-align: center;
+	}
+.PageFooterLink {
+	color: #FEFEFE; text-decoration: none;
+	}
+.PageFooterLink:Hover {
+	color: #FEFEFE; text-decoration: underline;
+	}
+.ImageBorder {
+	border: 1px solid #FFFFFF; vertical-align: middle;
+	}
+.ImageBorder:Hover {
+	border: 1px dashed #FFFFFF;
+	}
+.CloseWindow {
+	font-size: 9px; text-decoration: none;
+	}
+.MessageBox {
+	background-color: #FFFFFF; border: 2px solid #990000; font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 12px; color: #990000; padding: 6px;
+	}
+.MessageBar {
+	position: absolute; top: 0px; left: 0px; width: 100%; padding: 5px; background-color: #FFFFE1; border-bottom: 1px solid #808080; font-family: Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+	}
+.MenuLayer {
+	background-color: #FFFFFF; border-width: 1px 1px 0px 1px; border-style: solid; border-color: #4D4D60; text-align: left; cursor: pointer;
+	}
+.MenuOut {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; font-weight: normal; color: #FFFFFF; background-color: #000000; border-width: 0px 0px 1px 0px; border-style: solid; border-color: #4D4D60; padding: 1px 5px 1px 5px; height: 22px;
+	}
+.MenuOver {
+	font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; font-weight: normal; color: #FFFFFF; background-color: #1E4F8A; border-width: 0px 0px 1px 0px; border-style: solid; border-color: #4D4D60; padding: 1px 5px 1px 5px; height: 22px;
+	}
+.MenuLink {
+	text-decoration: none;
+	}
