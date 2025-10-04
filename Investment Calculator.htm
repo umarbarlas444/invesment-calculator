@@ -93,7 +93,7 @@ BODY {
 
 			// New Stuff Added by PerfectoMEDIA 7/6/2011
 			var Default_Drilling_Costs = 0;
-			var Default_Completion_Costs = 15000;
+			var Default_Completion_Costs = 28000;
 			var Drilling_Costs = Default_Drilling_Costs * Total_Units_Purchased;
 			var Completion_Costs = Default_Completion_Costs * Total_Units_Purchased;
 			$('#Drilling_Costs').val('$ '+Drilling_Costs);
@@ -437,12 +437,12 @@ BODY {
 	<td rowspan="21" width="15"></td>
     <td colspan="6" rowspan="3" style="border:1px solid #405078;" align="left" width="350"><p>Calculations
  are net of severance tax and estimated operating expense allowance of 
-$6,000 per month. Operating expenses are deducted from oil income only.</p>
+$2,000 per month. Operating expenses are deducted from oil income only.</p>
       <p><u><strong>(You can change the values of the light blue colored cells only)</strong></u></p></td>
   </tr>
   <tr>
     <td nowrap="nowrap">Total Units Offered</td>
-    <td><input id="Total_Units_Offered" name="Total_Units_Offered" value="40" readonly="true" type="text"></td>
+    <td><input id="Total_Units_Offered" name="Total_Units_Offered" value="25" readonly="true" type="text"></td>
   </tr>
   <tr>
     <td nowrap="nowrap">Drilling Costs</td>
@@ -450,7 +450,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Completion Costs</td>
-    <td><input id="Completion_Costs" name="Completion_Costs" value="$15,000" readonly="true" type="text"></td>
+    <td><input id="Completion_Costs" name="Completion_Costs" value="$28,000" readonly="true" type="text"></td>
     <td colspan="6">&nbsp;</td>
   </tr>
   <tr>
@@ -468,9 +468,9 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Total Amount of Investment</td>
-    <td><input id="Total_Amount_of_Investment" name="Total_Amount_of_Investment" value="$15,000" readonly="true" type="text"></td>
+    <td><input id="Total_Amount_of_Investment" name="Total_Amount_of_Investment" value="$28,000" readonly="true" type="text"></td>
     <td>High</td>
-    <td><input name="Barrels_per_Day_High" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_High" value="125" type="text"></td>
+    <td><input name="Barrels_per_Day_High" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_High" value="30" type="text"></td>
     <td>BBL</td>
     <td><input id="Barrels_per_Month_High" name="Barrels_per_Month_High" value="$0" readonly="true" type="text"></td>
     <td><input id="Barrels_per_Year_High" name="Barrels_per_Year_High" value="$0" readonly="true" type="text"></td>
@@ -479,7 +479,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   <tr>
     <td colspan="2" class="bggrey">Tax Data</td>
     <td>Medium</td>
-    <td><input name="Barrels_per_Day_Medium" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Medium" value="65" type="text"></td>
+    <td><input name="Barrels_per_Day_Medium" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Medium" value="20" type="text"></td>
     <td>BBL</td>
     <td><input id="Barrels_per_Month_Medium" name="Barrels_per_Month_Medium" value="$0" readonly="true" type="text"></td>
     <td><input id="Barrels_per_Year_Medium" name="Barrels_per_Year_Medium" value="$0" readonly="true" type="text"></td>
@@ -489,7 +489,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
     <td nowrap="nowrap">Your Personal Tax Bracket (%)</td>
     <td><input name="Personal_Tax_Bracket" class="FormFieldCurrency UIInputbox" id="Personal_Tax_Bracket" value="41.9%" type="text"></td>
     <td>Low</td>
-    <td><input name="Barrels_per_Day_Low" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Low" value="25" type="text"></td>
+    <td><input name="Barrels_per_Day_Low" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Low" value="10" type="text"></td>
     <td>BBL</td>
     <td><input id="Barrels_per_Month_Low" name="Barrels_per_Month_Low" value="$0" readonly="true" type="text"></td>
     <td><input id="Barrels_per_Year_Low" name="Barrels_per_Year_Low" value="$0" readonly="true" type="text"></td>
@@ -497,7 +497,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Investment Tax Deduction (%)</td>
-    <td><input id="Investment_Tax_Deduction" name="Investment_Tax_Deduction" value="85%" readonly="true" type="text"></td>
+    <td><input id="Investment_Tax_Deduction" name="Investment_Tax_Deduction" value="80%" readonly="true" type="text"></td>
     <td colspan="6">&nbsp;</td>
   </tr>
   <tr>
@@ -517,7 +517,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
     <td nowrap="nowrap">True Cost of Investment</td>
     <td><input id="Cost_of_Investment" name="Cost_of_Investment" value="$0" readonly="true" type="text"></td>
     <td>High</td>
-    <td><input name="Potential_Gas_Income_MCF_High" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_High" value="500" type="text"></td>
+    <td><input name="Potential_Gas_Income_MCF_High" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_High" value="750" type="text"></td>
     <td>MCF</td>
     <td><input id="Potential_Gas_Income_Monthly_High" name="Potential_Gas_Income_Monthly_High" value="$0" readonly="true" type="text"></td>
     <td><input id="Potential_Gas_Income_Annually_High" name="Potential_Gas_Income_Annually_High" value="$0" readonly="true" type="text"></td>
@@ -526,7 +526,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   <tr>
     <td colspan="2" class="bggrey">Interest</td>
     <td>Medium</td>
-    <td><input name="Potential_Gas_Income_MCF_Medium" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Medium" value="250" type="text"></td>
+    <td><input name="Potential_Gas_Income_MCF_Medium" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Medium" value="500" type="text"></td>
     <td>MCF</td>
     <td><input id="Potential_Gas_Income_Monthly_Medium" name="Potential_Gas_Income_Monthly_Medium" value="$0" readonly="true" type="text"></td>
     <td><input id="Potential_Gas_Income_Annually_Medium" name="Potential_Gas_Income_Annually_Medium" value="$0" readonly="true" type="text"></td>
@@ -534,9 +534,9 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Working Interest Per Unit</td>
-    <td><input id="Working_Interest_PerUnit" name="Working_Interest_PerUnit" value="1.0%" readonly="true" type="text"></td>
+    <td><input id="Working_Interest_PerUnit" name="Working_Interest_PerUnit" value="4.0%" readonly="true" type="text"></td>
     <td>Low</td>
-    <td><input name="Potential_Gas_Income_MCF_Low" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Low" value="100" type="text"></td>
+    <td><input name="Potential_Gas_Income_MCF_Low" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Low" value="250" type="text"></td>
     <td>MCF</td>
     <td><input id="Potential_Gas_Income_Monthly_Low" name="Potential_Gas_Income_Monthly_Low" value="$0" readonly="true" type="text"></td>
     <td><input id="Potential_Gas_Income_Annually_Low" name="Potential_Gas_Income_Annually_Low" value="$0" readonly="true" type="text"></td>
@@ -544,18 +544,18 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Net Revenue Interest Per Unit</td>
-    <td><input id="Net_Revenue_Interest" name="Net_Revenue_Interest" value="0.80%" readonly="true" type="text"></td>
+    <td><input id="Net_Revenue_Interest" name="Net_Revenue_Interest" value="0.75%" readonly="true" type="text"></td>
     <td colspan="6">&nbsp;</td>
   </tr>
   <tr>
     <td nowrap="nowrap">Your Working Interest</td>
-    <td><input id="Your_Working_Interest" name="Your_Working_Interest" value="1.0%" readonly="true" type="text"></td>
+    <td><input id="Your_Working_Interest" name="Your_Working_Interest" value="4.0%" readonly="true" type="text"></td>
     <td colspan="5" class="bggrey" style="border-right-color:#405078;">Potential Total Income</td>
     <td rowspan="2" class="bggrey">Cash Rate <br>of Return</td>
   </tr>
   <tr>
     <td nowrap="nowrap">Your Net Revenue Interest</td>
-    <td><input id="Your_Net_Revenue_Interest" name="Your_Net_Revenue_Interest" value="0.80%" readonly="true" type="text"></td>
+    <td><input id="Your_Net_Revenue_Interest" name="Your_Net_Revenue_Interest" value="0.75%" readonly="true" type="text"></td>
     <td colspan="3">Payout Months</td>
     <td>Monthly</td>
     <td>Annually</td>
@@ -571,7 +571,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Current Oil Rate per Barrel</td>
-    <td><input id="Current_Oil_Rate_per_Barrel" name="Current_Oil_Rate_per_Barrel" value="50.00" class="FormFieldCurrency UIInputbox" type="text"></td>
+    <td><input id="Current_Oil_Rate_per_Barrel" name="Current_Oil_Rate_per_Barrel" value="65.00" class="FormFieldCurrency UIInputbox" type="text"></td>
     
     <td>Medium</td>
     <td width="58"><input id="Potential_Total_Income_PayoutMonths_Medium" name="Potential_Total_Income_PayoutMonths_Medium" value="9" readonly="true" type="text"></td>
@@ -582,7 +582,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
   </tr>
   <tr>
     <td nowrap="nowrap">Current Natural Gas Rate</td>
-    <td><input id="Current_Natural_Gas_Rate" name="Current_Natural_Gas_Rate" value="4.00" class="FormFieldCurrency UIInputbox" type="text"></td>
+    <td><input id="Current_Natural_Gas_Rate" name="Current_Natural_Gas_Rate" value="3.25" class="FormFieldCurrency UIInputbox" type="text"></td>
     
    
     <td>Low</td>
@@ -718,6 +718,7 @@ $6,000 per month. Operating expenses are deducted from oil income only.</p>
 * The calculations above are for example purposes only not in any way to be perceived as future prediction or tax advice.<br>
 One should contact their tax professional for such information.<br>
 <br>
+<img src="Logo-white-bg.svg" alt="Vista Enerygy" width="auto" height="auto" style="border-radius: 50px;"><br>
 
 
 
