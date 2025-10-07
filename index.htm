@@ -1,0 +1,767 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Investment Calculator</title>
+<meta name="Description" content="">
+<meta name="Keywords" content="">
+<meta name="Author" content="Investment Calculator)">
+<link rel="stylesheet" href="Investment%20Calculator_files/Style.css" type="text/css">
+<script type="text/javascript" src="Investment%20Calculator_files/jquery_002.js"></script>
+<link rel="stylesheet" href="Investment%20Calculator_files/queryLoader.htm" type="text/css">
+<script type="text/javascript" src="Investment%20Calculator_files/queryLoader_002.htm"></script>
+
+
+<script src="Investment%20Calculator_files/Functions.js" type="text/javascript"></script>
+<style type="text/css">
+BODY {
+    min-width: 841px; margin: 0px; padding: 0px; background: #626566; text-align: center; overflow-y: scroll;
+    }
+.PageContainer {
+    width: 841px; margin-left: auto; margin-right: auto;
+    }
+.PageLogoCalculator {
+	height: 18px; margin-top: 10px;
+	}
+.PageContentCalculator, .PageContentCalculator TABLE, TR, TD, P {
+	font-size: 10px; font-weight: normal;
+	}
+.FormFieldCurrency {
+	background: #BEE0E6 url('Images/Background_FormFieldCurrency.gif') left center no-repeat;
+	}
+</style>
+</head>
+
+<body>
+
+
+	<table cellborder="0" border="0" cellspacing="0" width="80%">
+	<tbody><tr>
+		
+		<td align="right"></td>
+	</tr>
+	</tbody></table>
+
+
+
+<style type="text/css">
+	h2{margin:0px; text-align:center;}
+	.heading{margin:0px; text-align:center;background-color:#405078; color:#FFFFFF;font-weight:bold; font-size:15px;}
+	.bggrey{height: 16px; background-color:#405078; text-align:center; font-weight:bold;color:#FFFFFF; border-right-color:#405078; }
+	input[type=text]{padding-left: 2px; padding-right: 2px; font-size:10px;width:70px; border:1px solid #ccc; text-align:right;}
+	.UIInputbox{padding-left: 2px; padding-right: 2px; background-color:#BEE0E6;}
+	#eventList_tbl table {border-style:hidden; border-collapse: collapse;}
+	#eventList_tbl th {border: solid 1px #405078;}
+	#eventList_tbl td {border: solid 1px #405078;}
+</style>
+
+	<script type="text/javascript" src="Investment%20Calculator_files/jquery-1.js"></script>
+	<script type="text/javascript" src="Investment%20Calculator_files/jquery.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('input').each(function(i){
+			if((this.id=='Total_Units_Purchased')||(this.id=='Personal_Tax_Bracket')||(this.id=='Current_Oil_Rate_per_Barrel')||(this.id=='Current_Natural_Gas_Rate')||(this.id=='Barrels_per_Day_High')||(this.id=='Barrels_per_Day_Medium')||(this.id=='Barrels_per_Day_Low')||(this.id=='Potential_Gas_Income_MCF_High')||(this.id=='Potential_Gas_Income_MCF_Medium')||(this.id=='Potential_Gas_Income_MCF_Low'))
+			{
+				$('#'+this.id).addClass('UIInputbox');
+			}
+			
+		});
+		
+		/*Additional Functions created*/
+		jQuery.fn.returnInt = function () {
+			var retVal=$.trim(this.val());
+			retVal = retVal.replace("$","");
+			retVal = retVal.replace("%","");
+			retVal = retVal.replace(",","");
+			retVal = parseInt(retVal);
+			return retVal;
+		}
+		jQuery.fn.returnFloat = function () {
+			var retVal=$.trim(this.val());
+			retVal = retVal.replace("$","");
+			retVal = retVal.replace("%","");
+			retVal = retVal.replace(",","");
+			retVal = parseFloat(retVal).toFixed(2);
+			return retVal;
+		}
+
+		jQuery.fn.calculateTax = function(){
+			//alert( this.val());
+			
+			var Total_Units_Purchased=$('#Total_Units_Purchased').returnFloat();
+			if (Total_Units_Purchased<'1'){Total_Units_Purchased=='1';}
+
+			// New Stuff Added by PerfectoMEDIA 7/6/2011
+			var Default_Drilling_Costs = 0;
+			var Default_Completion_Costs = 28000;
+			var Drilling_Costs = Default_Drilling_Costs * Total_Units_Purchased;
+			var Completion_Costs = Default_Completion_Costs * Total_Units_Purchased;
+			$('#Drilling_Costs').val('$ '+Drilling_Costs);
+			$('#Drilling_Costs').formatCurrency();
+			$('#Completion_Costs').val('$ '+Completion_Costs);
+			$('#Completion_Costs').formatCurrency();
+			var Other_Expenses=$('#Other_Expenses').returnInt();
+			var Total_Amount_of_Investment = ((Drilling_Costs + Completion_Costs) + Other_Expenses);
+
+			// Old Stuff Removed by PerfectoMEDIA 7/6/2011
+			//var Drilling_Costs=$('#Drilling_Costs').returnInt();
+			//var Completion_Costs=$('#Completion_Costs').returnInt();
+			//var Other_Expenses=$('#Other_Expenses').returnInt();
+			//var Total_Amount_of_Investment = (((Drilling_Costs+Completion_Costs)*Total_Units_Purchased)+Other_Expenses);
+
+			Total_Amount_of_Investment = parseFloat(Total_Amount_of_Investment).toFixed(2);
+			$('#Total_Amount_of_Investment').val('$ '+Total_Amount_of_Investment);
+			$('#Total_Amount_of_Investment').formatCurrency();
+			
+			//2nd
+			var Total_Amount_of_Investment=$('#Total_Amount_of_Investment').returnInt();
+			var Investment_Tax_Deduction=$('#Investment_Tax_Deduction').returnInt();
+			
+			var Tax_Deduction = (Total_Amount_of_Investment*Investment_Tax_Deduction)/100;
+			$('#Tax_Deduction').val('$ '+Tax_Deduction);
+			$('#Tax_Deduction').formatCurrency();
+			
+			//3rd
+			var Personal_Tax_Bracket=$('#Personal_Tax_Bracket').val();
+			Personal_Tax_Bracket=Personal_Tax_Bracket.replace("%","");
+			
+			$('#Personal_Tax_Bracket').val(Personal_Tax_Bracket+'%');
+			Personal_Tax_Bracket = $('#Personal_Tax_Bracket').returnFloat();
+			var Tax_Savings = (Tax_Deduction*Personal_Tax_Bracket)/100;
+			$('#Tax_Savings').val('$ '+Tax_Savings);
+			$('#Tax_Savings').formatCurrency();
+			
+			//4th
+			var Cost_of_Investment = ((Total_Amount_of_Investment-Tax_Deduction)+(Tax_Deduction*(1-Personal_Tax_Bracket/100)))
+			var Cost_of_Investment = parseInt(Cost_of_Investment);
+			$('#Cost_of_Investment').val('$ '+Cost_of_Investment);
+			$('#Cost_of_Investment').formatCurrency();
+			
+			//5th Your_Working_Interest
+			var Working_Interest_PerUnit = $('#Working_Interest_PerUnit').returnFloat();
+			var Your_Working_Interest = (Working_Interest_PerUnit * Total_Units_Purchased);
+			Your_Working_Interest = parseFloat(Your_Working_Interest).toFixed(2);
+			$('#Your_Working_Interest').val(Your_Working_Interest+'%');
+			
+			var Net_Revenue_Interest = $('#Net_Revenue_Interest').returnFloat();
+			var Your_Net_Revenue_Interest = (Net_Revenue_Interest*Total_Units_Purchased);
+			Your_Net_Revenue_Interest = parseFloat(Your_Net_Revenue_Interest).toFixed(2);
+			$('#Your_Net_Revenue_Interest').val(Your_Net_Revenue_Interest+'%');
+			
+			//Potential Oil Income Calculations
+				//High
+				var Current_Oil_Rate_per_Barrel = $('#Current_Oil_Rate_per_Barrel').returnFloat();
+				var Barrels_per_Day_High = $('#Barrels_per_Day_High').returnInt();
+				
+					//Monthly 
+					var Barrels_per_Month_High = (((Barrels_per_Day_High*30)*(Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954)-(40*Total_Units_Purchased));
+					$('#Barrels_per_Month_High').val('$ '+Barrels_per_Month_High);
+					$('#Barrels_per_Month_High').formatCurrency();
+					
+					//Annually 
+					var Barrels_per_Year_High = Barrels_per_Month_High*12;
+					$('#Barrels_per_Year_High').val('$ '+Barrels_per_Year_High);
+					$('#Barrels_per_Year_High').formatCurrency();
+					
+					//Cash_Rate_of_Return_High
+					var Cash_Rate_of_Return_High = (Barrels_per_Year_High/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_High = parseInt(Cash_Rate_of_Return_High);
+					$('#Cash_Rate_of_Return_High').val(Cash_Rate_of_Return_High+'%');
+				
+				var Barrels_per_Day_Medium = $('#Barrels_per_Day_Medium').returnInt();
+					//Monthly 
+					var Barrels_per_Month_Medium = (((Barrels_per_Day_Medium*30)*(Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954)-(40*Total_Units_Purchased));
+					$('#Barrels_per_Month_Medium').val('$ '+Barrels_per_Month_Medium);
+					$('#Barrels_per_Month_Medium').formatCurrency();
+					
+					//Annually 
+					var Barrels_per_Year_Medium = Barrels_per_Month_Medium*12;
+					$('#Barrels_per_Year_Medium').val('$ '+Barrels_per_Year_Medium);
+					$('#Barrels_per_Year_Medium').formatCurrency();
+					
+					//Cash_Rate_of_Return_Medium
+					var Cash_Rate_of_Return_Medium = (Barrels_per_Year_Medium/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_Medium = parseInt(Cash_Rate_of_Return_Medium);
+					$('#Cash_Rate_of_Return_Medium').val(Cash_Rate_of_Return_Medium+'%');
+					
+				var Barrels_per_Day_Low = $('#Barrels_per_Day_Low').returnInt();
+					//Monthly 
+					var Barrels_per_Month_Low = (((Barrels_per_Day_Low*30)*(Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954)-(40*Total_Units_Purchased));
+					$('#Barrels_per_Month_Low').val('$ '+Barrels_per_Month_Low);
+					$('#Barrels_per_Month_Low').formatCurrency();
+					
+					//Annually 
+					var Barrels_per_Year_Low = Barrels_per_Month_Low*12;
+					$('#Barrels_per_Year_Low').val('$ '+Barrels_per_Year_Low);
+					$('#Barrels_per_Year_Low').formatCurrency();
+					
+					//Cash_Rate_of_Return_Low
+					var Cash_Rate_of_Return_Low = (Barrels_per_Year_Low/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_Low = parseInt(Cash_Rate_of_Return_Low);
+					$('#Cash_Rate_of_Return_Low').val(Cash_Rate_of_Return_Low+'%');
+				
+			//Potential Oil Income Calculations Ends Here
+			
+			//Potential Gas Income Calculations
+				//High
+				var Current_Natural_Gas_Rate = $('#Current_Natural_Gas_Rate').returnFloat();
+				var Potential_Gas_Income_MCF_High = $('#Potential_Gas_Income_MCF_High').returnInt();
+				
+					//Monthly 
+					var Potential_Gas_Income_Monthly_High = ((Potential_Gas_Income_MCF_High*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925);
+					$('#Potential_Gas_Income_Monthly_High').val('$ '+Potential_Gas_Income_Monthly_High);
+					$('#Potential_Gas_Income_Monthly_High').formatCurrency();
+					
+					//Annually 
+					var Potential_Gas_Income_Annually_High = Potential_Gas_Income_Monthly_High*12;
+					$('#Potential_Gas_Income_Annually_High').val('$ '+Potential_Gas_Income_Annually_High);
+					$('#Potential_Gas_Income_Annually_High').formatCurrency();
+					
+					//Cash_Rate_of_Return_Potential_Gas_Income_High
+					var Cash_Rate_of_Return_Potential_Gas_Income_High = (Potential_Gas_Income_Annually_High/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_Potential_Gas_Income_High = parseInt(Cash_Rate_of_Return_Potential_Gas_Income_High);
+					$('#Cash_Rate_of_Return_Potential_Gas_Income_High').val(Cash_Rate_of_Return_Potential_Gas_Income_High+'%');
+				
+				//Medium
+				var Potential_Gas_Income_MCF_Medium = $('#Potential_Gas_Income_MCF_Medium').returnInt();
+				
+					//Monthly 
+					var Potential_Gas_Income_Monthly_Medium = ((Potential_Gas_Income_MCF_Medium*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925);
+					$('#Potential_Gas_Income_Monthly_Medium').val('$ '+Potential_Gas_Income_Monthly_Medium);
+					$('#Potential_Gas_Income_Monthly_Medium').formatCurrency();
+					
+					//Annually 
+					var Potential_Gas_Income_Annually_Medium = Potential_Gas_Income_Monthly_Medium*12;
+					$('#Potential_Gas_Income_Annually_Medium').val('$ '+Potential_Gas_Income_Annually_Medium);
+					$('#Potential_Gas_Income_Annually_Medium').formatCurrency();
+					
+					//Cash_Rate_of_Return_Potential_Gas_Income_Medium
+					var Cash_Rate_of_Return_Potential_Gas_Income_Medium = (Potential_Gas_Income_Annually_Medium/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_Potential_Gas_Income_Medium = parseInt(Cash_Rate_of_Return_Potential_Gas_Income_Medium);
+					$('#Cash_Rate_of_Return_Potential_Gas_Income_Medium').val(Cash_Rate_of_Return_Potential_Gas_Income_Medium+'%');
+					
+				//Low
+				var Potential_Gas_Income_MCF_Low = $('#Potential_Gas_Income_MCF_Low').returnInt();
+				
+					//Monthly 
+					var Potential_Gas_Income_Monthly_Low = ((Potential_Gas_Income_MCF_Low*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925);
+					$('#Potential_Gas_Income_Monthly_Low').val('$ '+Potential_Gas_Income_Monthly_Low);
+					$('#Potential_Gas_Income_Monthly_Low').formatCurrency();
+					
+					//Annually 
+					var Potential_Gas_Income_Annually_Low = Potential_Gas_Income_Monthly_Low*12;
+					$('#Potential_Gas_Income_Annually_Low').val('$ '+Potential_Gas_Income_Annually_Low);
+					$('#Potential_Gas_Income_Annually_Low').formatCurrency();
+					
+					//Cash_Rate_of_Return_Potential_Gas_Income_Low
+					var Cash_Rate_of_Return_Potential_Gas_Income_Low = (Potential_Gas_Income_Annually_Low/Total_Amount_of_Investment)*100;
+					Cash_Rate_of_Return_Potential_Gas_Income_Low = parseInt(Cash_Rate_of_Return_Potential_Gas_Income_Low);
+					$('#Cash_Rate_of_Return_Potential_Gas_Income_Low').val(Cash_Rate_of_Return_Potential_Gas_Income_Low+'%');
+
+			//Potential Gas Income Calculations Ends Here
+			//Potential Total Income
+			var Potential_Total_Income_PayoutMonths_High = Total_Amount_of_Investment/(Potential_Gas_Income_Monthly_High+Barrels_per_Month_High);
+			$('#Potential_Total_Income_PayoutMonths_High').val(Math.round(Potential_Total_Income_PayoutMonths_High));
+			var Potential_Total_Income_PayoutMonths_Medium = Total_Amount_of_Investment/(Potential_Gas_Income_Monthly_Medium+Barrels_per_Month_Medium);
+			$('#Potential_Total_Income_PayoutMonths_Medium').val(Math.round(Potential_Total_Income_PayoutMonths_Medium));
+			var Potential_Total_Income_PayoutMonths_Low = Total_Amount_of_Investment/(Potential_Gas_Income_Monthly_Low+Barrels_per_Month_Low);
+			$('#Potential_Total_Income_PayoutMonths_Low').val(Math.round(Potential_Total_Income_PayoutMonths_Low));
+
+				var Potential_Total_Income_Monthly_High = Barrels_per_Month_High+Potential_Gas_Income_Monthly_High;
+				$('#Potential_Total_Income_Monthly_High').val('$ '+Potential_Total_Income_Monthly_High);
+				$('#Potential_Total_Income_Monthly_High').formatCurrency();
+				var Potential_Total_Income_Monthly_Medium = Barrels_per_Month_Medium+Potential_Gas_Income_Monthly_Medium;
+				$('#Potential_Total_Income_Monthly_Medium').val('$ '+Potential_Total_Income_Monthly_Medium);
+				$('#Potential_Total_Income_Monthly_Medium').formatCurrency();
+				var Potential_Total_Income_Monthly_Low = Barrels_per_Month_Low+Potential_Gas_Income_Monthly_Low;
+				$('#Potential_Total_Income_Monthly_Low').val('$ '+Potential_Total_Income_Monthly_Low);
+				$('#Potential_Total_Income_Monthly_Low').formatCurrency();
+
+				var Potential_Total_Income_Annually_High = Barrels_per_Year_High+Potential_Gas_Income_Annually_High;
+				$('#Potential_Total_Income_Annually_High').val('$ '+Potential_Total_Income_Annually_High);
+				$('#Potential_Total_Income_Annually_High').formatCurrency();
+				var Potential_Total_Income_Annually_Medium = Barrels_per_Year_Medium+Potential_Gas_Income_Annually_Medium;
+				$('#Potential_Total_Income_Annually_Medium').val('$ '+Potential_Total_Income_Annually_Medium);
+				$('#Potential_Total_Income_Annually_Medium').formatCurrency();
+				var Potential_Total_Income_Annually_Low = Barrels_per_Year_Low+Potential_Gas_Income_Annually_Low;
+				$('#Potential_Total_Income_Annually_Low').val('$ '+Potential_Total_Income_Annually_Low);
+				$('#Potential_Total_Income_Annually_Low').formatCurrency();
+				
+				var Cash_Rate_of_Return_Potential_Total_Income_High = (Cash_Rate_of_Return_High+Cash_Rate_of_Return_Potential_Gas_Income_High);
+				$('#Cash_Rate_of_Return_Potential_Total_Income_High').val(Cash_Rate_of_Return_Potential_Total_Income_High+'%');
+				var Cash_Rate_of_Return_Potential_Total_Income_Medium = (Cash_Rate_of_Return_Medium+Cash_Rate_of_Return_Potential_Gas_Income_Medium);
+				$('#Cash_Rate_of_Return_Potential_Total_Income_Medium').val(Cash_Rate_of_Return_Potential_Total_Income_Medium+'%');
+				var Cash_Rate_of_Return_Potential_Total_Income_Low = (Cash_Rate_of_Return_Low+Cash_Rate_of_Return_Potential_Gas_Income_Low);
+				$('#Cash_Rate_of_Return_Potential_Total_Income_Low').val(Cash_Rate_of_Return_Potential_Total_Income_Low+'%');
+			//Potential Total Income Ends here
+			
+			//Real Rate of Return After Application Tax Benefits OIL
+			//Monthly
+			var Real_Rate_of_Return_Oil_Monthly_High = ((((Barrels_per_Day_High*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954-40*Total_Units_Purchased)) + (Barrels_per_Day_High*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Oil_Monthly_High').val('$ '+Real_Rate_of_Return_Oil_Monthly_High);
+			$('#Real_Rate_of_Return_Oil_Monthly_High').formatCurrency();
+			var Real_Rate_of_Return_Oil_Monthly_Medium = ((((Barrels_per_Day_Medium*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954-40*Total_Units_Purchased)) + (Barrels_per_Day_Medium*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Oil_Monthly_Medium').val('$ '+Real_Rate_of_Return_Oil_Monthly_Medium);
+			$('#Real_Rate_of_Return_Oil_Monthly_Medium').formatCurrency();
+			var Real_Rate_of_Return_Oil_Monthly_Low = ((((Barrels_per_Day_Low*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*0.954-40*Total_Units_Purchased)) + (Barrels_per_Day_Low*30*Current_Oil_Rate_per_Barrel*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Oil_Monthly_Low').val('$ '+Real_Rate_of_Return_Oil_Monthly_Low);
+			$('#Real_Rate_of_Return_Oil_Monthly_Low').formatCurrency();
+			
+			var Real_Rate_of_Return_Oil_Yearly_High = Real_Rate_of_Return_Oil_Monthly_High*12;
+			$('#Real_Rate_of_Return_Oil_Yearly_High').val('$ '+Real_Rate_of_Return_Oil_Yearly_High);
+			$('#Real_Rate_of_Return_Oil_Yearly_High').formatCurrency();
+			var Real_Rate_of_Return_Oil_Yearly_Medium = Real_Rate_of_Return_Oil_Monthly_Medium*12;
+			$('#Real_Rate_of_Return_Oil_Yearly_Medium').val('$ '+Real_Rate_of_Return_Oil_Yearly_Medium);
+			$('#Real_Rate_of_Return_Oil_Yearly_Medium').formatCurrency();
+			var Real_Rate_of_Return_Oil_Yearly_Low = Real_Rate_of_Return_Oil_Monthly_Low*12;
+			$('#Real_Rate_of_Return_Oil_Yearly_Low').val('$ '+Real_Rate_of_Return_Oil_Yearly_Low);
+			$('#Real_Rate_of_Return_Oil_Yearly_Low').formatCurrency();
+			
+			
+			var Real_Rate_of_Return_Oil_Percentage_High=(Real_Rate_of_Return_Oil_Yearly_High/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Oil_Percentage_High=parseInt(Real_Rate_of_Return_Oil_Percentage_High);
+			$('#Real_Rate_of_Return_Oil_Percentage_High').val(Real_Rate_of_Return_Oil_Percentage_High+'%');
+			
+			var Real_Rate_of_Return_Oil_Percentage_Medium=(Real_Rate_of_Return_Oil_Yearly_Medium/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Oil_Percentage_Medium=parseInt(Real_Rate_of_Return_Oil_Percentage_Medium);
+			$('#Real_Rate_of_Return_Oil_Percentage_Medium').val(Real_Rate_of_Return_Oil_Percentage_Medium+'%');
+			
+			var Real_Rate_of_Return_Oil_Percentage_Low=(Real_Rate_of_Return_Oil_Yearly_Low/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Oil_Percentage_Low=parseInt(Real_Rate_of_Return_Oil_Percentage_Low);
+			$('#Real_Rate_of_Return_Oil_Percentage_Low').val(Real_Rate_of_Return_Oil_Percentage_Low+'%');
+			
+			//GAS
+			var Real_Rate_of_Return_Gas_Monthly_High = ((((Potential_Gas_Income_MCF_High*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925)) + (Potential_Gas_Income_MCF_High*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Gas_Monthly_High').val('$ '+Real_Rate_of_Return_Gas_Monthly_High);
+			$('#Real_Rate_of_Return_Gas_Monthly_High').formatCurrency();
+			var Real_Rate_of_Return_Gas_Monthly_Medium = ((((Potential_Gas_Income_MCF_Medium*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925)) + (Potential_Gas_Income_MCF_Medium*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Gas_Monthly_Medium').val('$ '+Real_Rate_of_Return_Gas_Monthly_Medium);
+			$('#Real_Rate_of_Return_Gas_Monthly_Medium').formatCurrency();
+			var Real_Rate_of_Return_Gas_Monthly_Low = ((((Potential_Gas_Income_MCF_Low*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*0.925)) + (Potential_Gas_Income_MCF_Low*30*Current_Natural_Gas_Rate*Your_Net_Revenue_Interest/100)*(0.15*Personal_Tax_Bracket/100));
+			$('#Real_Rate_of_Return_Gas_Monthly_Low').val('$ '+Real_Rate_of_Return_Gas_Monthly_Low);
+			$('#Real_Rate_of_Return_Gas_Monthly_Low').formatCurrency();
+			
+			var Real_Rate_of_Return_Gas_Yearly_High = Real_Rate_of_Return_Gas_Monthly_High*12;
+			$('#Real_Rate_of_Return_Gas_Yearly_High').val('$ '+Real_Rate_of_Return_Gas_Yearly_High);
+			$('#Real_Rate_of_Return_Gas_Yearly_High').formatCurrency();
+			var Real_Rate_of_Return_Gas_Yearly_Medium = Real_Rate_of_Return_Gas_Monthly_Medium*12;
+			$('#Real_Rate_of_Return_Gas_Yearly_Medium').val('$ '+Real_Rate_of_Return_Gas_Yearly_Medium);
+			$('#Real_Rate_of_Return_Gas_Yearly_Medium').formatCurrency();
+			var Real_Rate_of_Return_Gas_Yearly_Low = Real_Rate_of_Return_Gas_Monthly_Low*12;
+			$('#Real_Rate_of_Return_Gas_Yearly_Low').val('$ '+Real_Rate_of_Return_Gas_Yearly_Low);
+			$('#Real_Rate_of_Return_Gas_Yearly_Low').formatCurrency();
+			
+			var Real_Rate_of_Return_Gas_Percentage_High=(Real_Rate_of_Return_Gas_Yearly_High/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Gas_Percentage_High=parseInt(Real_Rate_of_Return_Gas_Percentage_High);
+			$('#Real_Rate_of_Return_Gas_Percentage_High').val(Real_Rate_of_Return_Gas_Percentage_High+'%');
+			
+			var Real_Rate_of_Return_Gas_Percentage_Medium=(Real_Rate_of_Return_Gas_Yearly_Medium/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Gas_Percentage_Medium=parseInt(Real_Rate_of_Return_Gas_Percentage_Medium);
+			$('#Real_Rate_of_Return_Gas_Percentage_Medium').val(Real_Rate_of_Return_Gas_Percentage_Medium+'%');
+			
+			var Real_Rate_of_Return_Gas_Percentage_Low=(Real_Rate_of_Return_Gas_Yearly_Low/Cost_of_Investment)*100;
+			Real_Rate_of_Return_Gas_Percentage_Low=parseInt(Real_Rate_of_Return_Gas_Percentage_Low);
+			$('#Real_Rate_of_Return_Gas_Percentage_Low').val(Real_Rate_of_Return_Gas_Percentage_Low+'%');
+				
+			//Combined OIL and GAS Income
+			var Real_Rate_of_Return_OilGas_Monthly_High = Real_Rate_of_Return_Oil_Monthly_High+Real_Rate_of_Return_Gas_Monthly_High;
+			$('#Real_Rate_of_Return_OilGas_Monthly_High').val('$ '+Real_Rate_of_Return_OilGas_Monthly_High);
+			$('#Real_Rate_of_Return_OilGas_Monthly_High').formatCurrency();
+			var Real_Rate_of_Return_OilGas_Monthly_Medium = Real_Rate_of_Return_Oil_Monthly_Medium+Real_Rate_of_Return_Gas_Monthly_Medium;
+			$('#Real_Rate_of_Return_OilGas_Monthly_Medium').val('$ '+Real_Rate_of_Return_OilGas_Monthly_Medium);
+			$('#Real_Rate_of_Return_OilGas_Monthly_Medium').formatCurrency();
+			var Real_Rate_of_Return_OilGas_Monthly_Low = Real_Rate_of_Return_Oil_Monthly_Low+Real_Rate_of_Return_Gas_Monthly_Low;
+			$('#Real_Rate_of_Return_OilGas_Monthly_Low').val('$ '+Real_Rate_of_Return_OilGas_Monthly_Low);
+			$('#Real_Rate_of_Return_OilGas_Monthly_Low').formatCurrency();
+			
+			var Real_Rate_of_Return_OilGas_Yearly_High = Real_Rate_of_Return_Oil_Yearly_High+Real_Rate_of_Return_Gas_Yearly_High;
+			$('#Real_Rate_of_Return_OilGas_Yearly_High').val('$ '+Real_Rate_of_Return_OilGas_Yearly_High);
+			$('#Real_Rate_of_Return_OilGas_Yearly_High').formatCurrency();
+			var Real_Rate_of_Return_OilGas_Yearly_Medium = Real_Rate_of_Return_Oil_Yearly_Medium+Real_Rate_of_Return_Gas_Yearly_Medium;
+			$('#Real_Rate_of_Return_OilGas_Yearly_Medium').val('$ '+Real_Rate_of_Return_OilGas_Yearly_Medium);
+			$('#Real_Rate_of_Return_OilGas_Yearly_Medium').formatCurrency();
+			var Real_Rate_of_Return_OilGas_Yearly_Low = Real_Rate_of_Return_Oil_Yearly_Low+Real_Rate_of_Return_Gas_Yearly_Low;
+			$('#Real_Rate_of_Return_OilGas_Yearly_Low').val('$ '+Real_Rate_of_Return_OilGas_Yearly_Low);
+			$('#Real_Rate_of_Return_OilGas_Yearly_Low').formatCurrency();
+			
+			var Real_Rate_of_Return_OilGas_Percentage_High=(Real_Rate_of_Return_OilGas_Yearly_High/Cost_of_Investment)*100;
+			Real_Rate_of_Return_OilGas_Percentage_High=parseInt(Real_Rate_of_Return_OilGas_Percentage_High);
+			$('#Real_Rate_of_Return_OilGas_Percentage_High').val(Real_Rate_of_Return_OilGas_Percentage_High+'%');
+			
+			var Real_Rate_of_Return_OilGas_Percentage_Medium=(Real_Rate_of_Return_OilGas_Yearly_Medium/Cost_of_Investment)*100;
+			Real_Rate_of_Return_OilGas_Percentage_Medium=parseInt(Real_Rate_of_Return_OilGas_Percentage_Medium);
+			$('#Real_Rate_of_Return_OilGas_Percentage_Medium').val(Real_Rate_of_Return_OilGas_Percentage_Medium+'%');
+			
+			var Real_Rate_of_Return_OilGas_Percentage_Low=(Real_Rate_of_Return_OilGas_Yearly_Low/Cost_of_Investment)*100;
+			Real_Rate_of_Return_OilGas_Percentage_Low=parseInt(Real_Rate_of_Return_OilGas_Percentage_Low);
+			$('#Real_Rate_of_Return_OilGas_Percentage_Low').val(Real_Rate_of_Return_OilGas_Percentage_Low+'%');
+		}
+
+		$('#Total_Units_Purchased').keyup(function(){
+			$('#Total_Units_Purchased').calculateTax();
+		});
+		$('#Personal_Tax_Bracket').keyup(function(){
+			$('#Personal_Tax_Bracket').calculateTax();
+		});
+		$('#Current_Oil_Rate_per_Barrel').keyup(function(){
+			$('#Current_Oil_Rate_per_Barrel').calculateTax();
+		});
+		$('#Current_Natural_Gas_Rate').keyup(function(){
+			$('#Current_Natural_Gas_Rate').calculateTax();
+		});
+		$('#Barrels_per_Day_High').keyup(function(){
+			$('#Barrels_per_Day_High').calculateTax();
+		});
+		$('#Barrels_per_Day_Medium').keyup(function(){
+			$('#Barrels_per_Day_Medium').calculateTax();
+		});
+		$('#Barrels_per_Day_Low').keyup(function(){
+			$('#Barrels_per_Day_Low').calculateTax();
+		});
+		$('#Potential_Gas_Income_MCF_High').keyup(function(){
+			$('#Potential_Gas_Income_MCF_High').calculateTax();
+		});
+		$('#Potential_Gas_Income_MCF_Medium').keyup(function(){
+			$('#Potential_Gas_Income_MCF_Medium').calculateTax();
+		});
+		$('#Potential_Gas_Income_MCF_Low').keyup(function(){
+			$('#Potential_Gas_Income_MCF_Low').calculateTax();
+		});
+
+	});
+	</script>
+
+<table style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; BORDER-RIGHT: medium; BORDER-TOP: medium none; BORDER-LEFT: medium none; BORDER-BOTTOM: medium none; border-collapse:collapse; border:1px solid #fff;" id="eventList_tbl" align="center" border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td colspan="2" class="bggrey">Units</td>
+	<td rowspan="21" width="15"></td>
+    <td colspan="6" rowspan="3" style="border:1px solid #405078;" align="left" width="350"><p>Calculations
+ are net of severance tax and estimated operating expense allowance of 
+$2,000 per month. Operating expenses are deducted from oil income only.</p>
+      <p><u><strong>(You can change the values of the light blue colored cells only)</strong></u></p></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Total Units Offered</td>
+    <td><input id="Total_Units_Offered" name="Total_Units_Offered" value="25" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Drilling Costs</td>
+    <td><input id="Drilling_Costs" name="Drilling_Costs" value="$0" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Completion Costs</td>
+    <td><input id="Completion_Costs" name="Completion_Costs" value="$28,000" readonly="true" type="text"></td>
+    <td colspan="6">&nbsp;</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Other Expenses</td>
+    <td><input id="Other_Expenses" name="Other_Expenses" value="0" readonly="true" type="text"></td>
+    <td colspan="5" class="bggrey" style="border-right-color:#405078;">Potential Oil Income</td>
+     <td rowspan="2" class="bggrey">Cash Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap"><b>Total Units Purchased</b> (Please enter how many units you want to purchase)</td>
+    <td><input name="Total_Units_Purchased" class="FormFieldCurrency UIInputbox" id="Total_Units_Purchased" value="0.00" type="text"></td>
+    <td colspan="3">Barrels per Day</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Total Amount of Investment</td>
+    <td><input id="Total_Amount_of_Investment" name="Total_Amount_of_Investment" value="$28,000" readonly="true" type="text"></td>
+    <td>High</td>
+    <td><input name="Barrels_per_Day_High" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_High" value="30" type="text"></td>
+    <td>BBL</td>
+    <td><input id="Barrels_per_Month_High" name="Barrels_per_Month_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Barrels_per_Year_High" name="Barrels_per_Year_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_High" name="Cash_Rate_of_Return_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bggrey">Tax Data</td>
+    <td>Medium</td>
+    <td><input name="Barrels_per_Day_Medium" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Medium" value="20" type="text"></td>
+    <td>BBL</td>
+    <td><input id="Barrels_per_Month_Medium" name="Barrels_per_Month_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Barrels_per_Year_Medium" name="Barrels_per_Year_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Medium" name="Cash_Rate_of_Return_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Your Personal Tax Bracket (%)</td>
+    <td><input name="Personal_Tax_Bracket" class="FormFieldCurrency UIInputbox" id="Personal_Tax_Bracket" value="41.9%" type="text"></td>
+    <td>Low</td>
+    <td><input name="Barrels_per_Day_Low" class="FormFieldCurrency UIInputbox" id="Barrels_per_Day_Low" value="10" type="text"></td>
+    <td>BBL</td>
+    <td><input id="Barrels_per_Month_Low" name="Barrels_per_Month_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Barrels_per_Year_Low" name="Barrels_per_Year_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Low" name="Cash_Rate_of_Return_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Investment Tax Deduction (%)</td>
+    <td><input id="Investment_Tax_Deduction" name="Investment_Tax_Deduction" value="80%" readonly="true" type="text"></td>
+    <td colspan="6">&nbsp;</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Tax Deduction</td>
+    <td><input id="Tax_Deduction" name="Tax_Deduction" value="$0" readonly="true" type="text"></td>
+    <td colspan="5" class="bggrey" style="border-right-color:#405078;">Potential Gas Income</td>
+    <td rowspan="2" class="bggrey">Cash Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Tax Savings</td>
+    <td><input id="Tax_Savings" name="Tax_Savings" value="$0" readonly="true" type="text"></td>
+    <td colspan="3">MCF</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">True Cost of Investment</td>
+    <td><input id="Cost_of_Investment" name="Cost_of_Investment" value="$0" readonly="true" type="text"></td>
+    <td>High</td>
+    <td><input name="Potential_Gas_Income_MCF_High" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_High" value="750" type="text"></td>
+    <td>MCF</td>
+    <td><input id="Potential_Gas_Income_Monthly_High" name="Potential_Gas_Income_Monthly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Gas_Income_Annually_High" name="Potential_Gas_Income_Annually_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Gas_Income_High" name="Cash_Rate_of_Return_Potential_Gas_Income_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bggrey">Interest</td>
+    <td>Medium</td>
+    <td><input name="Potential_Gas_Income_MCF_Medium" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Medium" value="500" type="text"></td>
+    <td>MCF</td>
+    <td><input id="Potential_Gas_Income_Monthly_Medium" name="Potential_Gas_Income_Monthly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Gas_Income_Annually_Medium" name="Potential_Gas_Income_Annually_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Gas_Income_Medium" name="Cash_Rate_of_Return_Potential_Gas_Income_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Working Interest Per Unit</td>
+    <td><input id="Working_Interest_PerUnit" name="Working_Interest_PerUnit" value="4.0%" readonly="true" type="text"></td>
+    <td>Low</td>
+    <td><input name="Potential_Gas_Income_MCF_Low" class="FormFieldCurrency UIInputbox" id="Potential_Gas_Income_MCF_Low" value="250" type="text"></td>
+    <td>MCF</td>
+    <td><input id="Potential_Gas_Income_Monthly_Low" name="Potential_Gas_Income_Monthly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Gas_Income_Annually_Low" name="Potential_Gas_Income_Annually_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Gas_Income_Low" name="Cash_Rate_of_Return_Potential_Gas_Income_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Net Revenue Interest Per Unit</td>
+    <td>
+        <input id="Net_Revenue_Interest" name="Net_Revenue_Interest" value="3.0%" readonly="true" type="text">
+        <!-- Updated: 75% of 4% WI is 3% NRI -->
+    </td>
+    <td colspan="6">&nbsp;</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Your Working Interest</td>
+    <td><input id="Your_Working_Interest" name="Your_Working_Interest" value="4.0%" readonly="true" type="text"></td>
+    <td colspan="5" class="bggrey" style="border-right-color:#405078;">Potential Total Income</td>
+    <td rowspan="2" class="bggrey">Cash Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Your Net Revenue Interest</td>
+    <td>
+        <input id="Your_Net_Revenue_Interest" name="Your_Net_Revenue_Interest" value="3.0%" readonly="true" type="text">
+        <!-- Updated: 75% of 4% WI is 3% NRI -->
+    </td>
+    <td colspan="3">Payout Months</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bggrey">Current Rate</td>
+    <td>High</td>
+    <td width="58"><input id="Potential_Total_Income_PayoutMonths_High" name="Potential_Total_Income_PayoutMonths_High" value="6" readonly="true" type="text"></td>
+    <td width="52">Months</td>
+    <td><input id="Potential_Total_Income_Monthly_High" name="Potential_Total_Income_Monthly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Total_Income_Annually_High" name="Potential_Total_Income_Annually_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Total_Income_High" name="Cash_Rate_of_Return_Potential_Total_Income_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Current Oil Rate per Barrel</td>
+    <td><input id="Current_Oil_Rate_per_Barrel" name="Current_Oil_Rate_per_Barrel" value="65.00" class="FormFieldCurrency UIInputbox" type="text"></td>
+    
+    <td>Medium</td>
+    <td width="58"><input id="Potential_Total_Income_PayoutMonths_Medium" name="Potential_Total_Income_PayoutMonths_Medium" value="9" readonly="true" type="text"></td>
+    <td width="52">Months</td>
+    <td><input id="Potential_Total_Income_Monthly_Medium" name="Potential_Total_Income_Monthly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Total_Income_Annually_Medium" name="Potential_Total_Income_Annually_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Total_Income_Medium" name="Cash_Rate_of_Return_Potential_Total_Income_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">Current Natural Gas Rate</td>
+    <td><input id="Current_Natural_Gas_Rate" name="Current_Natural_Gas_Rate" value="3.25" class="FormFieldCurrency UIInputbox" type="text"></td>
+    
+   
+    <td>Low</td>
+    <td width="58"><input id="Potential_Total_Income_PayoutMonths_Low" name="Potential_Total_Income_PayoutMonths_Low" value="18" readonly="true" type="text"></td>
+    <td width="52">Months</td>
+    <td><input id="Potential_Total_Income_Monthly_Low" name="Potential_Total_Income_Monthly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Potential_Total_Income_Annually_Low" name="Potential_Total_Income_Annually_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Cash_Rate_of_Return_Potential_Total_Income_Low" name="Cash_Rate_of_Return_Potential_Total_Income_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+</tbody></table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+	<td colspan="5">&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="5" style="height: 22px;" class="bggrey">Real Rate of Return After Application Tax Benefits</td>
+</tr>
+<tr>
+	<td colspan="5" style="height: 5px; border-left: 1px solid #405078; border-right: 1px solid #405078;"></td>
+</tr>
+
+<tr>
+	<td>
+
+<table style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; border-collapse:collapse;" id="eventList_tbl" align="center" cellpadding="2" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td colspan="3" class="bggrey">OIL</td>
+    <td rowspan="2" class="bggrey">Real Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td>High</td>
+    <td><input id="Real_Rate_of_Return_Oil_Monthly_High" name="Real_Rate_of_Return_Oil_Monthly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Yearly_High" name="Real_Rate_of_Return_Oil_Yearly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Percentage_High" name="Real_Rate_of_Return_Oil_Percentage_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+   
+    <td>Medium</td>
+    <td><input id="Real_Rate_of_Return_Oil_Monthly_Medium" name="Real_Rate_of_Return_Oil_Monthly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Yearly_Medium" name="Real_Rate_of_Return_Oil_Yearly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Percentage_Medium" name="Real_Rate_of_Return_Oil_Percentage_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    
+    <td>Low</td>
+    <td><input id="Real_Rate_of_Return_Oil_Monthly_Low" name="Real_Rate_of_Return_Oil_Monthly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Yearly_Low" name="Real_Rate_of_Return_Oil_Yearly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Oil_Percentage_Low" name="Real_Rate_of_Return_Oil_Percentage_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+	</tbody></table>
+
+	</td>
+	<td>&nbsp;&nbsp;</td>
+	<td>
+
+<table style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; border-collapse:collapse;" id="eventList_tbl" align="center" cellpadding="2" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td colspan="3" class="bggrey">GAS</td>
+    <td rowspan="2" class="bggrey">Real Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td>High</td>
+    <td><input id="Real_Rate_of_Return_Gas_Monthly_High" name="Real_Rate_of_Return_Gas_Monthly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Yearly_High" name="Real_Rate_of_Return_Gas_Yearly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Percentage_High" name="Real_Rate_of_Return_Gas_Percentage_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td>Medium</td>
+    <td><input id="Real_Rate_of_Return_Gas_Monthly_Medium" name="Real_Rate_of_Return_Gas_Monthly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Yearly_Medium" name="Real_Rate_of_Return_Gas_Yearly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Percentage_Medium" name="Real_Rate_of_Return_Gas_Percentage_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+   
+    <td>Low</td>
+    <td><input id="Real_Rate_of_Return_Gas_Monthly_Low" name="Real_Rate_of_Return_Gas_Monthly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Yearly_Low" name="Real_Rate_of_Return_Gas_Yearly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_Gas_Percentage_Low" name="Real_Rate_of_Return_Gas_Percentage_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+	</tbody></table>
+
+	</td>
+	<td>&nbsp;&nbsp;</td>
+	<td>
+
+<table style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px; border-collapse:collapse;" id="eventList_tbl" align="center" cellpadding="2" cellspacing="0" width="100%">
+  <tbody><tr>
+    <td colspan="3" class="bggrey">Combined OIL and GAS Income</td>
+    <td rowspan="2" class="bggrey">Real Rate <br>of Return</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Monthly</td>
+    <td>Annually</td>
+  </tr>
+  <tr>
+    <td>High</td>
+    <td><input id="Real_Rate_of_Return_OilGas_Monthly_High" name="Real_Rate_of_Return_OilGas_Monthly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Yearly_High" name="Real_Rate_of_Return_OilGas_Yearly_High" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Percentage_High" name="Real_Rate_of_Return_OilGas_Percentage_High" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td>Medium</td>
+    <td><input id="Real_Rate_of_Return_OilGas_Monthly_Medium" name="Real_Rate_of_Return_OilGas_Monthly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Yearly_Medium" name="Real_Rate_of_Return_OilGas_Yearly_Medium" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Percentage_Medium" name="Real_Rate_of_Return_OilGas_Percentage_Medium" value="0%" readonly="true" type="text"></td>
+  </tr>
+  <tr>
+    <td>Low</td>
+    <td><input id="Real_Rate_of_Return_OilGas_Monthly_Low" name="Real_Rate_of_Return_OilGas_Monthly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Yearly_Low" name="Real_Rate_of_Return_OilGas_Yearly_Low" value="$0" readonly="true" type="text"></td>
+    <td><input id="Real_Rate_of_Return_OilGas_Percentage_Low" name="Real_Rate_of_Return_OilGas_Percentage_Low" value="0%" readonly="true" type="text"></td>
+  </tr>
+</tbody></table>
+
+	</td>
+</tr>
+</tbody></table>
+
+<p>
+
+* The calculations above are for example purposes only not in any way to be perceived as future prediction or tax advice.<br>
+One should contact their tax professional for such information.<br>
+<br>
+<img src="Logo-white-bg.svg" alt="Vista Enerygy" width="auto" height="auto" style="border-radius: 50px;"><br>
+
+
+
+
+<noscript>
+	<DIV CLASS="MessageBar"><B>JavaScript is disabled or not supported.</B> Please enable it to continue, or <A HREF="/Error.asp?Message=NoJavaScript">click here</A> for more information.</DIV>
+	<% If Not thePage ="Error" Then %>
+<META HTTP-EQUIV="refresh" CONTENT="0;URL=/Error.asp?Message=NoJavaScript">
+	<% End If %>
+</noscript>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 START -->
+<script type="text/javascript" src="Investment%20Calculator_files/count.js"></script>
+<script type="text/javascript"><!--
+wm_custnum='4568b588fc406c58';
+wm_page_name='intercalc2.php';
+wm_group_name='/services/webpages/p/r/prestonenergy.com/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds.count();
+// -->
+</script>
+<!-- WiredMinds eMetrics tracking with Enterprise Edition V5.4 END -->
+<!-- WiredMinds Piwik tracking START -->
+<script type="text/javascript" src="Investment%20Calculator_files/count_piwik.js"></script>
+<script type="text/javascript"><!--
+wm_custnum='4568b588fc406c58';
+wm_page_name='intercalc2.php';
+wm_group_name='/services/webpages/p/r/prestonenergy.com/public';
+wm_campaign_key='campaign_id';
+wm_track_alt='';
+wiredminds_pw.count();
+// -->
+</script>
+<!-- WiredMinds Piwik tracking END -->
+
+
+
+<script type="text/javascript">
+	QueryLoader.init();
+</script></p></body></html>
